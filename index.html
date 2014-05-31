@@ -7,6 +7,38 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <script type="text/javascript" src="js/lib/phaser.js"></script>
+  <script type="text/javascript" src="js/states/game.js"></script>
+  <script type="text/javascript" src="js/wave.js"></script>
+    
+   
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(640, 800, Phaser.CANVAS, '',  {preload: preload, create: create});
+
+function preload(){
+  
+  game.scale.setShowAll();
+  game.scale.setScreenSize();
+  game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.image('spritesheet','assets/spritesheet.png');
+  game.load.image('tower1','assets/tower1.png');
+  game.load.image('tower2','assets/tower2.png');
+  game.load.image('bullet','assets/bullet.png');
+  game.load.image('menu','assets/menu.png');
+  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+  
+  
+  
+}
+
+function create(){
+ // game.state.add('menu', menu_state); 
+game.state.add('game', game_state); 
+game.state.start('game');
+ }
+</script>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -32,7 +64,9 @@
 
         <section id="main_content">
           <p>This is only a prototype. The game is still under development.</p>
+          <div id='game'></div>
         </section>
+
 
         <footer>
           Phaser Tower Defence is maintained by <a href="https://github.com/j0hnskot">j0hnskot</a><br>

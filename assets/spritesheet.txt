@@ -1,0 +1,10 @@
+buildable = 0 0 32 32
+down = 32 0 32 32
+finish = 0 32 32 32
+grass = 32 32 32 32
+left = 64 0 32 32
+path = 64 32 32 32
+right = 96 0 32 32
+start = 96 32 32 32
+up = 0 64 32 32
+wall = 0 96 32 32

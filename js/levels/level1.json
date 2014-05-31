@@ -1,0 +1,26 @@
+{
+
+	"numberOfWaves":5,
+	"waves":{
+		"wave1":{
+			"type":"enemy",
+			"amount":10,
+		},
+		"wave2":{
+			"type":"enemy",
+			"amount":5,
+		},
+		"wave3":{
+			"type":"enemy",
+			"amount":10,
+		},
+		"wave4":{
+			"type":"enemy",
+			"amount":20,
+		},
+		"wave5":{
+			"type":"enemy",
+			"amount":30,
+		},
+	},	
+}
