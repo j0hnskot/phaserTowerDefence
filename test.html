@@ -1,0 +1,54 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Space shooter with the phaser engine</title>
+	<script type="text/javascript" src="js/lib/phaser.js"></script>
+	
+
+    
+    <style type="text/css">
+
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(640, 800, Phaser.CANVAS, '',  {preload: preload, create: create});
+
+
+
+function preload(){
+game.load.tilemap('map2', 'assets/maps/map2.json', null, Phaser.Tilemap.TILED_JSON);
+game.load.image('tiles', 'assets/grass.png');
+}
+
+var map;
+var layer;
+
+function create() {
+
+    game.stage.backgroundColor = '#787878';
+
+    //  The 'mario' key here is the Loader key given in game.load.tilemap
+    map = game.add.tilemap('map2');
+
+    //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
+    //  The second parameter maps this name to the Phaser.Cache key 'tiles'
+    map.addTilesetImage('grass', 'tiles');
+    
+    //  Creates a layer from the World1 layer in the map data.
+    //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
+    layer = map.createLayer('Tile Layer 1');
+
+    //  This resizes the game world to match the layer dimensions
+    layer.resizeWorld();
+    var tile = map.getTile( 0, 0, 'Tile Layer 1' );
+console.log( tile.properties );
+
+}
+</script>
