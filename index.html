@@ -19,7 +19,7 @@ var game = new Phaser.Game(640, 800, Phaser.CANVAS, 'game',  {preload: preload, 
 
 function preload(){
   
-  game.scale.setShowAll();
+  game.scale.setExactFit();
   game.scale.setScreenSize();
   game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('spritesheet','assets/spritesheet.png');
