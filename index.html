@@ -19,8 +19,9 @@ var game = new Phaser.Game(640, 800, Phaser.CANVAS, 'game',  {preload: preload, 
 
 function preload(){
   
-  game.scale.setExactFit();
-  game.scale.setScreenSize();
+  game.scale.maxWidth=600;
+  game.scale.setShowAll();
+game.scale.setScreenSize();
   game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('spritesheet','assets/spritesheet.png');
   game.load.image('tower1','assets/tower1.png');
@@ -64,7 +65,8 @@ game.state.start('game');
 
         <section id="main_content">
           <p>This is only a prototype. The game is still under development.</p>
-          <div id='game' style="max-width:200"></div>
+         
+          <div id='game' style="max-height:800px;max-width:600px;"></div>
         </section>
 
 
