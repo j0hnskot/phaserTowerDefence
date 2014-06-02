@@ -5,47 +5,27 @@ var Wave = function (game){
 	this.typeOfEnemy=null;
 	this.wavesCompleted=0;
 	this.waveTimer=null;
+	this.currentLevelData=null;
+	this.TIME_FOR_EACH_WAVE=30000;
+	this.enemy=new Enemy(game); //responsible for enemy creation 
 
 
-	  this.levelData={
-
-  "numberOfWaves":5,
-  "waves":{
-    1:{
-      "type":"dude",
-      "amount":10,
-    },
-    2:{
-      "type":"dude",
-      "amount":5,
-    },
-    3:{
-      "type":"dude",
-      "amount":10,
-    },
-    4:{
-      "type":"dude",
-      "amount":20,
-    },
-    5:{
-      "type":"dude",
-      "amount":30,
-    },
-  },  
-}
-
+	  
 };
 
 Wave.prototype={
 
 	preload: function(){},
 
-	create: function(){
+	create: function(levelData){
+		this.enemy.create();
+		this.currentLevelData=levelData;
+		console.log(this.currentLevelData);
 		this.state=game.state.getCurrentState();
-		game.time.events.loop(2000, this.checkState,this);
-		this.waveTimer=game.time.create();      
-	     //
-	      this.waveTimer.start();
+		//this.currentLevelData=this.state.level.createLevel(2);
+		// game.time.events.add(2500, this.selectWave,this);
+		this.waveTimer=game.time.create();  
+				
 
 		//this.createWave();
 	},
@@ -58,9 +38,9 @@ Wave.prototype={
 			this.selectWave();
 			return
 		}else if(this.state.enemies.getFirstAlive()===null){
-			this.levelData.waves[this.currentWave].complete=true;
+			this.currentLevelData.waves[this.currentWave].complete=true;
 			this.wavesCompleted++;
-			if(this.wavesCompleted>=this.levelData.numberOfWaves){
+			if(this.wavesCompleted>=this.currentLevelData.numberOfWaves){
 				console.log('all waves completed');
 				return
 			}
@@ -72,36 +52,63 @@ Wave.prototype={
 		
 	},
 
-	selectWave: function(){
-		
-		for(var i=1;i<=this.levelData.numberOfWaves;i++){
-			if(!this.levelData.waves[i].complete){
+	selectWave: function(){	
+		if(this.currentWave>=this.currentLevelData.numberOfWaves)return
+
+		for(var i=1;i<=this.currentLevelData.numberOfWaves;i++){
+			if(!this.currentLevelData.waves[i].complete){
 				this.currentWave=i;
-				this.amountOfEnemies=this.levelData.waves[i].amount;
-				this.type=this.levelData.waves[i].type;
-				console.log('wave chosen');
-				this.waveTimer.destroy();
-				this.waveTimer=game.time.create();
-				this.waveTimer.start();
-				for(var i=0;i<this.amountOfEnemies;i++){
-					game.time.events.add(1000+(100*i), function(){
 
-					var enemy=game.add.sprite(this.state.start.worldX,this.state.start.worldY,this.type);
-					enemy.anchor.set(0.5);
-					game.physics.arcade.enable(enemy);
-					enemy.body.setSize(1,enemy.height/2,0,20);
-					enemy.health=3;
-					enemy.body.allowGravity=false;
-					this.state.enemies.add(enemy);
+				for (var y=1;y<=this.currentLevelData.waves[i].numberOfTypes;y++){
+					this.amountOfEnemies=this.currentLevelData.waves[i][y].amount;
+					var type=this.currentLevelData.waves[i][y].type;
+
+					var start=this.currentLevelData.waves[i][y].start;
+					var spawnRate=this.currentLevelData.waves[i][y].spawnRate;
+					console.log('wave chosen');
+					console.log(start);
+				
+					for(var e=0;e<this.amountOfEnemies;e++){
 					
+							this.enemy.createEnemy(type,start,spawnRate*e);
 
-					}, this);
+						
+						
+
+						
+
+					}
+
 
 				}
+				// this.amountOfEnemies=this.currentLevelData.waves[i].amount;
+				// var type=this.currentLevelData.waves[i].type;
+				// var start=this.currentLevelData.waves[i].start;
+				// var spawnRate=this.currentLevelData.waves[i].spawnRate;
+				// console.log('wave chosen');
+
+			
+				// for(var e=0;e<this.amountOfEnemies;e++){
+				// 	game.time.events.add(1000+(spawnRate*e), function(){
+				// 		this.enemy.createEnemy(type,start);
+
+					
+					
+
+				// 	}, this);
+
+				// }
+				this.waveTimer.destroy();
+				this.waveTimer=game.time.create();  
+			
+			
+				this.waveTimer.add(this.TIME_FOR_EACH_WAVE, this.state.level.wave.selectWave,this);    
+	    			 this.waveTimer.start();
+				this.currentLevelData.waves[i].complete=true;
 
 				return
 			}else{
-				console.log('complete');
+				console.log(i+' complete');
 
 			}
 		}
@@ -109,23 +116,23 @@ Wave.prototype={
 
 	},
 
-  addEnemy: function(){
+  // addEnemy: function(){
     
-    for(var i=0;i<10;i++){
-      game.time.events.add(1000+(100*i), function(){
+  //   for(var i=0;i<10;i++){
+  //     game.time.events.add(1000+(100*i), function(){
         
-        var enemy=game.add.sprite(this.state.start.worldX,this.state.start.worldY,'dude');
-        enemy.anchor.set(0.5);
-        game.physics.arcade.enable(enemy);
-        enemy.body.setSize(1,enemy.height/2,0,20);
-        enemy.health=3;
-        enemy.body.allowGravity=false;
-        this.state.enemies.add(enemy);
+  //       var enemy=game.add.sprite(this.state.start.worldX,this.state.start.worldY,'dude');
+  //       enemy.anchor.set(0.5);
+  //       game.physics.arcade.enable(enemy);
+  //       enemy.body.setSize(1,enemy.height/2,0,20);
+  //       enemy.health=3;
+  //       enemy.body.allowGravity=false;
+  //       this.state.enemies.add(enemy);
         
-      }, this);
+  //     }, this);
       
-    }
+  //   }
     
     
-  },
+  // },
 }

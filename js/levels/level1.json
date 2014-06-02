@@ -1,26 +1,31 @@
 {
-
-	"numberOfWaves":5,
-	"waves":{
-		"wave1":{
-			"type":"enemy",
-			"amount":10,
+	"levels":{
+		1:{
+			"numberOfWaves":5,
+			"waves":{
+				1:{
+					"type":"dude",
+					"amount":10,
+				},
+				2:{
+					"type":"dude",
+					"amount":5,
+				},
+				3:{
+					"type":"dude",
+					"amount":10,
+				},
+				4:{
+					"type":"dude",
+					"amount":20,
+				},
+				5:{
+					"type":"dude",
+					"amount":30,
+				},
+			},
 		},
-		"wave2":{
-			"type":"enemy",
-			"amount":5,
-		},
-		"wave3":{
-			"type":"enemy",
-			"amount":10,
-		},
-		"wave4":{
-			"type":"enemy",
-			"amount":20,
-		},
-		"wave5":{
-			"type":"enemy",
-			"amount":30,
-		},
-	},	
+		2:{},
+		3:{},	
+	}
 }

@@ -7,27 +7,36 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-    <script type="text/javascript" src="js/lib/phaser.js"></script>
+  <script type="text/javascript" src="js/lib/phaser.js"></script>
   <script type="text/javascript" src="js/states/game.js"></script>
+  <script type="text/javascript" src="js/level.js"></script>
   <script type="text/javascript" src="js/wave.js"></script>
+    <script type="text/javascript" src="js/enemy.js"></script>
+     <script type="text/javascript" src="js/hud.js"></script>
+      <script type="text/javascript" src="js/tower.js"></script>
+      <script type="text/javascript" src="js/bullet.js"></script>
     
    
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(640, 800, Phaser.CANVAS, 'game',  {preload: preload, create: create});
+
+var game = new Phaser.Game(480, 320, Phaser.CANVAS, 'game',  {preload: preload, create: create});
 
 function preload(){
-  
-  game.scale.maxWidth=600;
-  game.scale.setShowAll();
-game.scale.setScreenSize();
+  // game.scale.pageAlignHorizontally = true;
+  // game.scale.pageAlignVertically = true;
+  //game.scale.setExactFit();
+  game.scale.maxWidth=620;
+  game.scale.setScreenSize();
   game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('spritesheet','assets/spritesheet.png');
   game.load.image('tower1','assets/tower1.png');
   game.load.image('tower2','assets/tower2.png');
   game.load.image('bullet','assets/bullet.png');
   game.load.image('menu','assets/menu.png');
+  game.load.image('towerMenu','assets/towerMenu.png');
+    game.load.image('towerDescriptionMenu','assets/towerDescriptionMenu.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   
   
@@ -66,7 +75,7 @@ game.state.start('game');
         <section id="main_content">
           <p>This is only a prototype. The game is still under development.</p>
          
-          <div id='game' style="max-height:800px;max-width:600px;"></div>
+          <div id='game'></div>
         </section>
 
 
