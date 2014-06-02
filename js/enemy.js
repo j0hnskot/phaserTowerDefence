@@ -5,7 +5,8 @@ var Enemy = function (game){
 		"dude":{
 			'health':5,
 			'reward':5,
-			'speed':100,
+			'speed':50,
+
 
 
 		},
@@ -19,19 +20,20 @@ Enemy.prototype={
 	create: function(){
 		this.state=game.state.getCurrentState();
 	},
-	createEnemy: function(type,start){
-
-		
-		var enemy=game.add.sprite(this.state.level.startTiles[start-1].worldX,this.state.level.startTiles[start-1].worldY,type);
+	createEnemy: function(type,start,spawnRate){
+		game.time.events.add(1000+(spawnRate), function(){
+		console.log(start);
+		var enemy=game.add.sprite(this.state.level.startTiles[start-1].worldX+8,this.state.level.startTiles[start-1].worldY+8,type);
 		enemy.anchor.set(0.5);
 		game.physics.arcade.enable(enemy);
-		enemy.body.setSize(1,enemy.height/2,0,20);
+		enemy.body.setSize(enemy.width/2,enemy.height/2,enemy.width/2,enemy.height/2);
 		
 		enemy.body.allowGravity=false;
 		for (var property in this.enemyData[type]) { enemy[property] = this.enemyData[type][property]; };
 		
 		enemy.slowedBy=0;
 		this.state.enemies.add(enemy);
+	},this);
 
 	},
 		

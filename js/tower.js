@@ -4,6 +4,7 @@ var Tower= function(game){
 	this.towerData={
 
 		"type1":{
+			"icon":"tower1",
 			"key":"tower1",
 			"name": "pew pew",
 			"cost":100,
@@ -18,6 +19,7 @@ var Tower= function(game){
 			"bulletVelocity":100,
 		},
 		"type2":{
+			"icon":"tower2",
 			"key":"tower2",
 			"name": "boom boom",
 			"cost":100,
@@ -32,6 +34,7 @@ var Tower= function(game){
 			"bulletVelocity":100,
 		},
 		"type3":{
+			"icon":"tower2",
 			"key":"tower2",
 			"name": "boom boom",
 			"cost":100,
@@ -71,6 +74,9 @@ Tower.prototype={
     console.log(circle.diameter);
     tower.circle=circle;
     tower.lastTimeFired=0;
+    tower.inputEnabled=true;
+    tower.events.onInputDown.add(this.state.hud.towerProperties,this.state.hud);
+        
     this.state.towers.add(tower);
     var selectedTile=this.state.level.map.getTileWorldXY(choice.tileX, choice.tileY);
     selectedTile.hasTower=true;
@@ -84,6 +90,8 @@ Tower.prototype={
     
     
   },
+
+  
 
     checkRadius: function(){
     //checks if an enemy is near the firing range of a tower

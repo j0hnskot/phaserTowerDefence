@@ -1,24 +1,60 @@
 var Level = function (game){
 	this.state=null;
 	this.map=null;
-  this.layer=null;
+	this.layer=null;
 
-  this.start=null;
-  this.finish=null;
-  this.GO_LEFT_TILE=3;
-  this.GO_RIGHT_TILE=4;
-  this.GO_UP_TILE=11;
-  this.GO_DOWN_TILE=2;
-  this.START_UP_TILE=10;
-  this.START_DOWN_TILE=8;
-  this.START_LEFT_TILE=9;
-  this.START_RIGHT_TILE=13;
-  this.FINISH_TILE=5;
-  this.BUILD_TILE=1;
-  this.CurrentLevel=null;
-  this.startTiles={};
-  this.wave=new Wave(game);
+	this.start=null;
+	this.finish=null;
+	this.LAYER_NAME='Tile Layer 1';
+	this.GO_LEFT_TILE=3;
+	this.GO_RIGHT_TILE=4;
+	this.GO_UP_TILE=11;
+	this.GO_DOWN_TILE=2;
+	this.START_UP_TILE=10;
+	this.START_DOWN_TILE=8;
+	this.START_LEFT_TILE=9;
+	this.START_RIGHT_TILE=13;
+	this.FINISH_TILE=5;
+	this.BUILD_TILE=1;
+	this.CurrentLevel=null;
+	this.startTiles={};
+	this.wave=new Wave(game);
 	this.level;
+
+	//level data structure guide
+	//	1:{	 //this is the number of the level
+	//		"numberOfSpawns":2, //each level must include a number of starting positions,at least one
+	//		"numberOfWaves":10, //this must represent the amount of waves correctly or not all waves
+								//you populated bellow will work
+
+	//		"waves":{ //start wave declaration
+	//				1:{	//the number of the wave
+	//					"numberOfTypes":2, //this represent the amount of enemies,it works the same way as 'numberOfwaves'
+	//					1:{ //first type
+	//						"start":2, //the starting position. Be sure that the number is right . 
+									   //If the number of spawns is lower than this, the enemy will not spawn at all
+	//						"type":"dude", //the type of the enemy,also the key of the sprite used. 
+	//						"amount":10,	// the amount of this enemy to be spawned. At least 1.
+	//						'spawnRate':100, // how fast the enemy will spawn, at least 1
+	//					},//end of type object
+	//					2:{ //this is a second type of enemy, can have completelly different values. 
+							//Be sure that the number is not higher than 'numberOfTypes' or the enemy will now spawn
+	//						"start":1, //the rest work like before.
+	//						"type":"dude",
+	//						"amount":5,
+	//						'spawnRate':600,
+	//					},
+	//				},//end of wave object
+	//
+	//		},//end of level object
+
+
+
+
+
+
+
+
  	this.levelData={
 		"levels":{
 			1:{
@@ -29,26 +65,31 @@ var Level = function (game){
 						"start":1,
 						"type":"dude",
 						"amount":1,
+						'spawnRate':100,
 					},
 					2:{	
 						"start":2,
 						"type":"dude",
 						"amount":5,
+						'spawnRate':100,
 					},
 					3:{		
 						"start":3,
 						"type":"dude",
 						"amount":10,
+						'spawnRate':100,
 					},
 					4:{	
 						"start":4,
 						"type":"dude",
 						"amount":20,
+						'spawnRate':100,
 					},
 					5:{	
 						"start":1,
 						"type":"dude",
 						"amount":30,
+						'spawnRate':100,
 					},
 				},
 			},
@@ -57,54 +98,85 @@ var Level = function (game){
 				"numberOfWaves":10,
 				"waves":{
 					1:{	
-						"start":1,
-						"type":"dude",
-						"amount":10,
+						"numberOfTypes":2,
+						1:{
+							"start":2,
+							"type":"dude",
+							"amount":10,
+							'spawnRate':100,
+						},
+						2:{
+							"start":1,
+							"type":"dude",
+							"amount":5,
+							'spawnRate':600,
+						},
 					},
 					2:{
-						"start":2,
+						"numberOfTypes":1,
+						1:{
+							"start":2,
 						"type":"dude",
 						"amount":5,
+						'spawnRate':100,
+						}
+						
 					},
 					3:{
-						"start":1,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
 						"amount":10,
-					},
+						'spawnRate':100,}
+			},
 					4:{
-						"start":2,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
-						"amount":20,
+						"amount":10,
+						'spawnRate':100,},
 					},
 					5:{
-						"start":1,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
-						"amount":30,
+						"amount":10,
+						'spawnRate':100,},
 					},
 					6:{
-						"start":2,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
 						"amount":10,
+						'spawnRate':100,},
 					},
 					7:{
-						"start":1,
-						"type":"dude",
-						"amount":5,
-					},
-					8:{
-						"start":2,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
 						"amount":10,
+						'spawnRate':100,},
+					},
+					8:{
+						"numberOfTypes":1,
+						1:{"start":1,
+						"type":"dude",
+						"amount":10,
+						'spawnRate':100,},
 					},
 					9:{
-						"start":1,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
-						"amount":20,
+						"amount":10,
+						'spawnRate':100,},
 					},
 					10:{
-						"start":2,
+						"numberOfTypes":1,
+						1:{"start":1,
 						"type":"dude",
-						"amount":30,
+						"amount":10,
+						'spawnRate':100,},
 					},
 				},
 			},
@@ -116,16 +188,18 @@ var Level = function (game){
 Level.prototype={
 
 	create: function(number){
+			
 			this.CurrentLevel=number;
+			
 			this.state=game.state.getCurrentState();
 			
 			this.map = game.add.tilemap('map'+this.CurrentLevel);
 		    this.map.addTilesetImage('spritesheet');
 		    
-		    this.layer= this.map.createLayer('Tile Layer 1');
+		    this.layer= this.map.createLayer(this.LAYER_NAME);
 		    this.layer.resizeWorld();
 		    console.log(this.map);
-		    //this.start=this.map.searchTileIndex(this.START_RIGHT_TILE,0, false,this.layer2);
+		 
 
 		   
 		  

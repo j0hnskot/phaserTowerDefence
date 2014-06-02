@@ -15,7 +15,7 @@ Bullet.prototype={
       	bullet.slowBy=tower.slowBy;
       	bullet.slowDuration=tower.slowDuration;
       	bullet.velocity=tower.bulletVelocity;
-      console.log(bullet);
+   
      	 game.physics.arcade.enable(bullet);
       if(bullet.exploding){
         bullet.circle=new Phaser.Circle(bullet.x, bullet.y,bullet.explosionRadius*2);
@@ -26,7 +26,7 @@ Bullet.prototype={
         game.add.tween(bullet).to( {x:enemy.x}, bullet.velocity, Phaser.Easing.Linear.None,true);
         game.add.tween(bullet).to( {y:enemy.y}, bullet.velocity, Phaser.Easing.Linear.None,true)
         .onComplete.add(function(){this.explodeRadius(bullet);},this);
-              console.log(bullet.radius);
+            
       }else{
         game.physics.arcade.moveToObject(bullet,enemy,bullet.velocity);
       }

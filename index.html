@@ -23,10 +23,11 @@
 
 <script type="text/javascript">
 window.scrollTo(0,1);
-var game = new Phaser.Game(800, 480, Phaser.CANVAS, '',  {preload: preload, create: create});
+var game = new Phaser.Game(480, 320, Phaser.CANVAS, '',  {preload: preload, create: create});
 
 function preload(){
-  
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
   game.scale.setExactFit();
   game.scale.setScreenSize();
   game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
@@ -35,6 +36,8 @@ function preload(){
   game.load.image('tower2','assets/tower2.png');
   game.load.image('bullet','assets/bullet.png');
   game.load.image('menu','assets/menu.png');
+  game.load.image('towerMenu','assets/towerMenu.png');
+    game.load.image('towerDescriptionMenu','assets/towerDescriptionMenu.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   
   

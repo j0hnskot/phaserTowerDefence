@@ -6,6 +6,9 @@ var Hud = function (game){
 	this.healthText;
 	this.goldText;
 	this.state;
+	this.waveTimerText;
+	this.towerMenu;
+	this.towerIcon=null;
 
  }
 
@@ -16,10 +19,20 @@ Hud.prototype={
 create : function(){
 	this.state=game.state.getCurrentState();
 if(game.state.current==='game' && this.enabled){
+
+	//tower Menu
+	this.towerMenu=game.add.image(-64,0,'towerMenu');
+	this.towerDescriptionMenu=game.add.image(0,game.height+100,'towerDescriptionMenu');
+
+	
 	
 	//create life bar
 	this.healthText=game.add.text(16,game.height-40,'Life: '+this.state.life,{fontSize:'32px',fill:'#ffffff'});
 	this.healthText.alpha=0.5;
+
+	this.waveTimerText=game.add.text(game.width-100,game.height-40,'Press Start to begin',{font:'16px Arial',fill:'#ffffff'});
+	this.waveTimerText.alpha=0.5;
+	this.waveTimerText.anchor.set(0.5);
 
 	
 
@@ -45,6 +58,9 @@ update: function(){
 		if (game.time.fps !== 0 && this.fpsEnabled) {
 			this.fpsText.setText(game.time.fps + ' FPS');
 		}
+		if(this.state.level.wave.waveTimer.duration!==0){
+			this.waveTimerText.text='Next wave in: \n' + Math.round(this.state.level.wave.waveTimer.duration/1000);
+		}		
 	}
 
 
@@ -75,16 +91,56 @@ updateGold: function(){
 		
 	}
 },
+
+toggleTowerMenu: function(to){
+	if(to=='off'){
+		for(var child in this.towerMenu.children){
+				this.towerMenu.children[child].kill();
+			}
+		  game.add.tween(this.towerMenu).to( {x:-64}, 200, Phaser.Easing.Linear.None,true);
+			
+				
+	}else{
+		if(!this.towerMenu.alive)this.towerMenu.revive();
+		game.add.tween(this.towerMenu).to( {x:0}, 200, Phaser.Easing.Linear.None,true);
+		
+	}
+			
+			
+},
+toggleTowerDescriptionMenu: function(to){
+	if(to=='off'){
+		for(var child in this.towerMenu.children){
+				this.towerMenu.children[child].kill();
+			}
+
+		  game.add.tween(this.towerDescriptionMenu).to( {y:game.height+100}, 200, Phaser.Easing.Linear.None,true);
+			
+	}else{
+		game.add.tween(this.towerDescriptionMenu).to( {y:game.height-100}, 200, Phaser.Easing.Linear.None,true);
+		
+	}
+
+},
+towerProperties: function(tower){
+  	this.toggleTowerMenu('on');
+  	this.toggleTowerDescriptionMenu('on');
+  	var towerIcon=game.add.image(0,0,tower.key);
+  	this.towerMenu.addChild(towerIcon);
+  	console.log(this.towerMenu);
+  	this.towerMenu.removeChild(towerIcon);
+  	console.log(this.towerMenu);
+  	console.log('tower details');
+	console.log(tower)
+
+  },
+towerMenu: function(){
+
+
+},
  
 
 
 };
 
 
-// Enemy.prototype = Object.create(Phaser.Sprite.prototype);
-// Enemy.prototype.constructor = Enemy;
-
-// Enemy.prototype.setWeapon = function(weapon){
-
-//  	this.weapon=new Weapon(weapon);
-//  };

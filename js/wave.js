@@ -58,21 +58,46 @@ Wave.prototype={
 		for(var i=1;i<=this.currentLevelData.numberOfWaves;i++){
 			if(!this.currentLevelData.waves[i].complete){
 				this.currentWave=i;
-				this.amountOfEnemies=this.currentLevelData.waves[i].amount;
-				var type=this.currentLevelData.waves[i].type;
-				var start=this.currentLevelData.waves[i].start;
-				console.log('wave chosen');
-			
-				for(var e=0;e<this.amountOfEnemies;e++){
-					game.time.events.add(1000+(100*e), function(){
-						this.enemy.createEnemy(type,start);
 
-					
-					
+				for (var y=1;y<=this.currentLevelData.waves[i].numberOfTypes;y++){
+					this.amountOfEnemies=this.currentLevelData.waves[i][y].amount;
+					var type=this.currentLevelData.waves[i][y].type;
 
-					}, this);
+					var start=this.currentLevelData.waves[i][y].start;
+					var spawnRate=this.currentLevelData.waves[i][y].spawnRate;
+					console.log('wave chosen');
+					console.log(start);
+				
+					for(var e=0;e<this.amountOfEnemies;e++){
+					
+							this.enemy.createEnemy(type,start,spawnRate*e);
+
+						
+						
+
+						
+
+					}
+
 
 				}
+				// this.amountOfEnemies=this.currentLevelData.waves[i].amount;
+				// var type=this.currentLevelData.waves[i].type;
+				// var start=this.currentLevelData.waves[i].start;
+				// var spawnRate=this.currentLevelData.waves[i].spawnRate;
+				// console.log('wave chosen');
+
+			
+				// for(var e=0;e<this.amountOfEnemies;e++){
+				// 	game.time.events.add(1000+(spawnRate*e), function(){
+				// 		this.enemy.createEnemy(type,start);
+
+					
+					
+
+				// 	}, this);
+
+				// }
 				this.waveTimer.destroy();
 				this.waveTimer=game.time.create();  
 			
