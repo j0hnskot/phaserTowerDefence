@@ -8,7 +8,7 @@ var game_state=function(game){
   this.bullets=null;
   this.enemies=null;
   this.life=50;
-  this.gold=100;
+  this.gold=5500;
   this.cursors=null;
   this.tower=new Tower(game);
 this.hud=new Hud(game);
@@ -39,6 +39,7 @@ game_state.prototype={
     game.load.image('menu','assets/menu.png');
     game.load.image('nextWaveButton','assets/nextWaveButton.png');
     game.load.spritesheet('dude', 'assets/dude.png', 10, 16,9);
+    game.load.image('buy_button','assets/buy_button.png')
     
     
     
@@ -65,7 +66,7 @@ game_state.prototype={
     
     game.input.onDown.add(this.createCircle,this);
     this.hud.create();
-    this.hud.fpsEnabled=true;
+    this.hud.fpsEnabled=false;
     
   },
   
@@ -176,14 +177,12 @@ game_state.prototype={
     var selectedTile=this.level.map.getTileWorldXY(game.input.activePointer.x, game.input.activePointer.y);
     
     //console.log(selectedTile);
-    if (this.choiceMenu!==null){
-        this.choiceMenu.kill();
-        this.choiceMenu=null;
-
-      }
+   
     if(selectedTile.index==this.level.BUILD_TILE && !selectedTile.hasTower){
       //this.hud.towerMenu.visible=true;
+      
       this.hud.towerShop(selectedTile);
+      console.log('no tower');
       //this.hud.toggleTowerMenu('on');
       // var choice={};
     
@@ -223,21 +222,21 @@ game_state.prototype={
     }
   },
   
-  createTower: function(type){
-    console.log(type.key);
-    var tower=game.add.sprite(type.tileX, type.tileY,type.key);
-    tower.anchor.set(0.5);
-    if(type.key=='tower2'){tower.exploding=true;}
+  // createTower: function(type){
+  //   console.log(type.key);
+  //   var tower=game.add.sprite(type.tileX, type.tileY,type.key);
+  //   tower.anchor.set(0.5);
+  //   if(type.key=='tower2'){tower.exploding=true;}
     
-    var circle = new Phaser.Circle(tower.x, tower.y,64);
-    tower.circle=circle;
-    tower.lastTimeFired=0;
-    this.towers.add(tower);
-    var selectedTile=this.level.map.getTileWorldXY(type.tileX, type.tileY);
-    selectedTile.hasTower=true;
-    
-    
+  //   var circle = new Phaser.Circle(tower.x, tower.y,64);
+  //   tower.circle=circle;
+  //   tower.lastTimeFired=0;
+  //   this.towers.add(tower);
+  //   var selectedTile=this.level.map.getTileWorldXY(type.tileX, type.tileY);
+  //   selectedTile.hasTower=true;
     
     
-  },
+    
+    
+  // },
 };

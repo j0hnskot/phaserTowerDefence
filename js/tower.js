@@ -17,6 +17,58 @@ var Tower= function(game){
 			"rateOfFire":250,
 			"bulletType":"bullet",
 			"bulletVelocity":100,
+     
+      "upgrades":{
+         "numberOfUpgrades":2,
+          1:{
+           
+            "icon":"tower1",
+            "key":"tower1",
+            "name": "pew pew",
+            "cost":10,
+            "damage":2,
+            "exploding":false,
+            "explosionRadius":0,
+            "range":70,
+            "slowBy":60,
+            "slowDuration":3,
+            "rateOfFire":250,
+            "bulletType":"bullet",
+            "bulletVelocity":100,
+          },
+          2:{
+           
+            "icon":"tower1",
+            "key":"tower1",
+            "name": "pew pew",
+            "cost":100,
+            "damage":3,
+            "exploding":false,
+            "explosionRadius":0,
+            "range":100,
+            "slowBy":50,
+            "slowDuration":3,
+            "rateOfFire":250,
+            "bulletType":"bullet",
+            "bulletVelocity":100,
+           },
+          3:{
+            
+           "icon":"tower1",
+            "key":"tower1",
+            "name": "pew pew",
+            "cost":200,
+            "damage":5,
+            "exploding":false,
+            "explosionRadius":0,
+            "range":120,
+            "slowBy":50,
+            "slowDuration":3,
+            "rateOfFire":250,
+            "bulletType":"bullet",
+            "bulletVelocity":100,
+          },
+      },
 		},
 		"type2":{
 			"icon":"tower2",
@@ -27,11 +79,12 @@ var Tower= function(game){
 			"exploding":true,
 			"explosionRadius":15,
 			"range":25,
-			"slowBy":50,
+			"slowBy":20,
 			"slowDuration":5,
 			"rateOfFire":1000,
 			"bulletType":"bullet",
 			"bulletVelocity":100,
+       "numberOfUpgrades":0,
 		},
 		"type3":{
 			"icon":"tower2",
@@ -47,6 +100,7 @@ var Tower= function(game){
 			"rateOfFire":300,
 			"bulletType":"bullet",
 			"bulletVelocity":100,
+       "numberOfUpgrades":0,
 		},
 
 
@@ -65,17 +119,19 @@ Tower.prototype={
     var tower=game.add.sprite(choice.tileX, choice.tileY,selectedTower.key);
     tower.anchor.set(0.5);
 
-  	for (var property in selectedTower) { tower[property] = selectedTower[property]; }
-  		console.log(tower);
+  	for (var property in selectedTower) { tower[property] = selectedTower[property]; };
+  	
 
-  //  if(type.key=='tower2'){tower.exploding=true;}
+  
     
     var circle = new Phaser.Circle(tower.x, tower.y,selectedTower.range*2);
     console.log(circle.diameter);
     tower.circle=circle;
     tower.lastTimeFired=0;
+    tower.upgrade=0;
+    tower.type=choice.type;
     tower.inputEnabled=true;
-    tower.events.onInputDown.add(this.state.hud.towerProperties,this.state.hud);
+    tower.events.onInputDown.add(function(tower){this.state.hud.towerProperties(tower)},this);
         
     this.state.towers.add(tower);
     var selectedTile=this.state.level.map.getTileWorldXY(choice.tileX, choice.tileY);
@@ -94,22 +150,34 @@ Tower.prototype={
   
 
     checkRadius: function(){
-    //checks if an enemy is near the firing range of a tower
-    
-    this.state.towers.forEachAlive(function(tower){
-      
+      //checks if an enemy is near the firing range of a tower
+
+      this.state.towers.forEachAlive(function(tower){
+
       this.state.enemies.forEachAlive(function(enemy){
-     
-        if (Phaser.Math.distance(enemy.x, enemy.y, tower.circle.x, tower.circle.y) <= tower.circle.radius) {
-        //	console.log(Phaser.Math.distance(enemy.x, enemy.y, tower.circle.x, tower.circle.y));
-          this.shoot(tower,enemy);
-        }
-        
+
+      if (Phaser.Math.distance(enemy.x, enemy.y, tower.circle.x, tower.circle.y) <= tower.circle.radius) {
+      //	console.log(Phaser.Math.distance(enemy.x, enemy.y, tower.circle.x, tower.circle.y));
+       this.shoot(tower,enemy);
+      }
+
       },this);
-      
-    },this);
+
+      },this);
+
     
-    
+  },
+  upgrade: function(tower){
+    var currentTowerData=this.towerData[tower.type].upgrades[tower.upgrade+1];
+    if(this.state.gold<currentTowerData.cost)return;
+    this.state.gold-=currentTowerData.cost;
+    this.state.hud.updateGold();
+   
+    tower.upgrade++;
+     console.log( tower.circle);
+   for (var property in currentTowerData) { tower[property] = currentTowerData[property]; }
+    console.log(currentTowerData);
+   tower.circle.radius=tower.range;
   },
 
   shoot: function(tower,enemy){
