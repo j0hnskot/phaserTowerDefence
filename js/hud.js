@@ -92,11 +92,15 @@ updateGold: function(){
 	}
 },
 
-toggleTowerMenu: function(to){
-	if(to=='off'){
-		for(var child in this.towerMenu.children){
-				this.towerMenu.children[child].kill();
+toggleTowerMenu: function(to,kill){
+	if(kill){
+		for(var child in this.towerDescriptionMenu.children){
+				this.towerDescriptionMenu.children[child].kill();
 			}
+	}
+
+	if(to=='off'){
+		
 		  game.add.tween(this.towerMenu).to( {x:-64}, 200, Phaser.Easing.Linear.None,true);
 			
 				
@@ -108,11 +112,14 @@ toggleTowerMenu: function(to){
 			
 			
 },
-toggleTowerDescriptionMenu: function(to){
-	if(to=='off'){
-		for(var child in this.towerMenu.children){
-				this.towerMenu.children[child].kill();
+toggleTowerDescriptionMenu: function(to,kill){
+	if(kill){
+		for(var child in this.towerDescriptionMenu.children){
+				this.towerDescriptionMenu.children[child].kill();
 			}
+	}
+
+	if(to=='off'){
 
 		  game.add.tween(this.towerDescriptionMenu).to( {y:game.height+100}, 200, Phaser.Easing.Linear.None,true);
 			
@@ -122,20 +129,52 @@ toggleTowerDescriptionMenu: function(to){
 	}
 
 },
-towerProperties: function(tower){
+towerProperties: function(tower,buy){
   	this.toggleTowerMenu('on');
   	this.toggleTowerDescriptionMenu('on');
-  	var towerIcon=game.add.image(0,0,tower.key);
-  	this.towerMenu.addChild(towerIcon);
+  	var towerIcon=game.add.image(100,this.towerDescriptionMenu.height/2,tower.icon);
+  	towerIcon.anchor.set(0.5);
+  	this.towerDescriptionMenu.addChild(towerIcon);
   	console.log(this.towerMenu);
-  	this.towerMenu.removeChild(towerIcon);
+  	//this.towerMenu.removeChild(towerIcon);
   	console.log(this.towerMenu);
   	console.log('tower details');
 	console.log(tower)
 
   },
-towerMenu: function(){
+towerShop: function(selectedTile){
+	this.toggleTowerMenu('on');
+	 var choice={};
+    
 
+      var towerData=this.state.tower.towerData;
+      var i=0;
+console.log(towerData);
+      for(var type in towerData){
+
+        var tower=game.add.image(this.towerMenu.width/2,20+(i*70),towerData[type].icon);
+        tower.anchor.set(0.5);
+        tower.type=type;
+        console.log(tower.type);
+        tower.inputEnabled=true;
+        tower.events.onInputDown.add(function(tower){this.towerProperties(tower,true)},this);
+        this.towerMenu.addChild(tower);
+        i++;
+       
+      }
+          
+      function toCreateTower(data){
+        if(this.gold<towerData[data.type].cost)return;
+	      choice={
+	        "tileX":selectedTile.worldX+8,
+	        "tileY":selectedTile.worldY+8,
+	        "type":data.type,
+	      }
+	        this.gold-=towerData[choice.type].cost;
+	        this.updateGold();
+	        this.state.tower.createTower(choice);
+            
+      }
 
 },
  

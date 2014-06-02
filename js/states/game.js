@@ -183,41 +183,41 @@ game_state.prototype={
       }
     if(selectedTile.index==this.level.BUILD_TILE && !selectedTile.hasTower){
       //this.hud.towerMenu.visible=true;
-      this.hud.toggleTowerMenu('on');
-      var choice={};
-      this.choiceMenu=game.add.sprite(selectedTile.worldX, selectedTile.worldY-10,'menu');
-      this.choiceMenu.anchor.x=0.5;
+      this.hud.towerShop(selectedTile);
+      //this.hud.toggleTowerMenu('on');
+      // var choice={};
+    
 
-      var towerData=this.tower.towerData;
-      var i=0;
+      // var towerData=this.tower.towerData;
+      // var i=0;
 
-      for(var type in towerData){
+      // for(var type in towerData){
 
-        var tower=game.add.sprite(this.hud.towerMenu.width/2,20+(i*70),towerData[type].icon);
-        tower.anchor.set(0.5);
-        tower.type=type;
-        tower.inputEnabled=true;
-        tower.events.onInputDown.add(toCreateTower,this);
-        this.hud.towerMenu.addChild(tower);
-        i++;
+      //   var tower=game.add.sprite(this.hud.towerMenu.width/2,20+(i*70),towerData[type].icon);
+      //   tower.anchor.set(0.5);
+      //   tower.type=type;
+      //   tower.inputEnabled=true;
+      //   tower.events.onInputDown.add(toCreateTower,this);
+      //   this.hud.towerMenu.addChild(tower);
+      //   i++;
        
-      }
+      // }
           
-      function toCreateTower(sprite){
-        if(this.gold<towerData[sprite.type].cost)return;
-        choice={
-        "tileX":selectedTile.worldX+8,
-        "tileY":selectedTile.worldY+8,
-        "type":sprite.type,
-      }
-        this.gold-=towerData[choice.type].cost;
-        this.hud.updateGold();
-        this.tower.createTower(choice);
+      // function toCreateTower(sprite){
+      //   if(this.gold<towerData[sprite.type].cost)return;
+      //   choice={
+      //   "tileX":selectedTile.worldX+8,
+      //   "tileY":selectedTile.worldY+8,
+      //   "type":sprite.type,
+      // }
+      //   this.gold-=towerData[choice.type].cost;
+      //   this.hud.updateGold();
+      //   this.tower.createTower(choice);
         
     
-      }
+      // }
     
-    }else{
+    }else  if(selectedTile.index!==this.level.BUILD_TILE && !selectedTile.hasTower){
        this.hud.toggleTowerMenu('off');
        this.hud.toggleTowerDescriptionMenu('off');
     }
